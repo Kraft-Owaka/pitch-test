@@ -4,13 +4,7 @@ class Config:
     '''
     General configuration parent class
     '''
-    pass
     
-    
-    @staticmethod
-    def init_app(app):
-        pass
-
 
 class ProdConfig(Config):
     '''
@@ -29,8 +23,3 @@ class DevConfig(Config):
     '''
     
     DEBUG = True
-
-config_options = {
-'development':DevConfig,
-'production':ProdConfig
-}
