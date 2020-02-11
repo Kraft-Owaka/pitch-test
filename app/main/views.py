@@ -1,5 +1,8 @@
 from flask import render_template
 from . import main
+from flask import render_template,request,redirect,url_for,abort
+from ..models import Reviews, User
+from .forms import ReviewForm,UpdateProfile
 
 
 # Views
@@ -33,6 +36,18 @@ def pickUpLine():
     ]
     
     return render_template('pickup.html', posts = posts)
+
+
+@main.route('/user/<uname>'update',methods = ['GET','POST'])
+@login_required
+def profile(uname):
+    user = User.query.filter_by(username = uname).first()
+
+    if user is None:
+        abort(404)
+
+    return render_template("profile/profile.html", user = user)
+
 
 @main.route('/cryptography')
 def crypto_line():
