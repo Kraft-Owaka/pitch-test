@@ -3,6 +3,7 @@ from . import main
 from flask import render_template,request,redirect,url_for,abort
 from ..models import Reviews, User
 from .forms import ReviewForm,UpdateProfile
+from flask_login import login_required
 
 
 # Views
@@ -37,6 +38,11 @@ def pickUpLine():
     
     return render_template('pickup.html', posts = posts)
 
+
+@main.route('/movie/review/new/<int:id>', methods = ['GET','POST'])
+@login_required
+def new_review(id):
+    
 
 @main.route('/user/<uname>'update',methods = ['GET','POST'])
 @login_required
