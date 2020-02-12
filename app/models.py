@@ -1,6 +1,7 @@
 from flask_login import UserMixin
 from . import login_manager
 from . import db
+from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
 
 @login_manager.user_loader
@@ -27,6 +28,12 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     password_secure = db.Column(db.String(255))
+    # pitches = db.relationship('Pitch', backref = 'author', lazy=True
+
+    def get_reset_token(self, expires_sec=1800):
+        s= Serializer(app.config['SECRET_KEY'], expires_sec)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
+
 
     @property
     def password(self):
@@ -42,3 +49,24 @@ class User(UserMixin,db.Model):
 
     def __repr__(self):
         return f'{self.username}'
+        
+    @staticmethod
+    def verify_reset_token(token):
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+
+    def __repr__(self):
+        return f"User('{self.username}','{self.email}','{self.image_file}')"
+
+class Pitch(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(100), nullable = False)
+    date_posted = db.Column(db.DateTime, nullable = False, default = datetime.utcnow )
+    content = db.Column(db.Text(1600), nullable = False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
+    category = db.Column(db.String(255), nullable= False)
+    def __repr__(self):
+        return f"Pitch('{self.title}','{self.date_posted}')"
