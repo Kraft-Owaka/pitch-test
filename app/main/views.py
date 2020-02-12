@@ -1,8 +1,8 @@
 from flask import render_template
 from . import main
 from flask import render_template,request,redirect,url_for,abort
-from ..models import Reviews, User
-from .forms import ReviewForm,UpdateProfile
+from ..models import User
+from .form import UpdateProfile
 from flask_login import login_required
 
 
@@ -14,8 +14,8 @@ def index():
     View root page function that returns the index page and its data
     '''
 
-    message = 'welcom'
-    return render_template('index.html',message = message) 
+    
+    return render_template('index.html') 
 
     
 @main.route('/pickup')
@@ -42,9 +42,9 @@ def pickUpLine():
 @main.route('/movie/review/new/<int:id>', methods = ['GET','POST'])
 @login_required
 def new_review(id):
-    
+    pass
 
-@main.route('/user/<uname>'update',methods = ['GET','POST'])
+@main.route('/user/<uname>/update',methods = ['GET','POST'])
 @login_required
 def profile(uname):
     user = User.query.filter_by(username = uname).first()
