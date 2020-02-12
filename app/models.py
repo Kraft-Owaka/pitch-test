@@ -1,3 +1,5 @@
+from flask_login import UserMixin
+
 class Pickup:
       
     def __init__(self, pickup_id, author, pickupLine):
