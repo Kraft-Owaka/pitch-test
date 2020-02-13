@@ -34,10 +34,6 @@ class User(UserMixin,db.Model):
     upvotes = db.relationship('Upvote', backref = 'user', lazy = 'dynamic')
     downvotes = db.relationship('Downvote', backref = 'user', lazy = 'dynamic')
 
-    # def get_reset_token(self, expires_sec=1800):
-    #     s= Serializer(app.config['SECRET_KEY'], expires_sec)
-    #     return s.dumps({'user_id': self.id}).decode('utf-8')
-
 
     @property
     def password(self):
