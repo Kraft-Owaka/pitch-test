@@ -1,82 +1,154 @@
-from flask import render_template
 from . import main
-from flask import render_template,request,redirect,url_for,abort
-from ..models import User
-from .form import UpdateProfile
+from flask import render_template,request,redirect,url_for,abort,flash
+from ..models import User,Pitch,Comment,Downvote,Upvote
+from flask.views import View, MethodView
+from flask_login import login_required,current_user
+from .form import UpdateProfile,PitchForm,CommentForm,UpvoteForm,DownvoteForm
 from flask_login import login_required
+from ..import db
+# import markdown2
 
 
 # Views
-@main.route('/')
+# @main.route('/')
+# def index():
+
+#     '''
+#     View root page function that returns the index page and its data
+#     '''
+
+    
+#     return render_template('index.html') 
+
+
+@main.route('/', methods=['GET','POST'])
 def index():
+    pitch=Pitch.query.all()
 
-    '''
-    View root page function that returns the index page and its data
-    '''
+    title='Pitch Zone'
 
-    
-    return render_template('index.html') 
+    investorpitch=Pitch.query.filter_by(category="investorpitch")
+    productpitch=Pitch.query.filter_by(category="productpitch")
+    interviewpitch=Pitch.query.filter_by(category="interviewpitch")
+    marketpitch=Pitch.query.filter_by(category="marketpitch")
 
-    
-@main.route('/pickup')
-def pickUpLine():
-    
-    posts = [
-        {
-            'author': 'Trevor M',
-            'pickupLine': 'Id a boxer',
-            'date_posted': 'May 14th, 1885',
-            'pickup_id' : 1
-        },
-        {
-            'author': 'Jose But',
-            'pickupLine': 'you  else !',
-            'date_posted': 'January 14th, 2080',
-            'pickup_id': 2
-        }
-    ]
-    
-    return render_template('pickup.html', posts = posts)
+    upvotes=Upvote.get_all_upvotes(pitch_id=Pitch.id)
+
+    return render_template('root.html',title=title,investorpitch=investorpitch,productpitch=productpitch,interviewpitch=interviewpitch,marketpitch=marketpitch,upvotes=upvotes,pitch=pitch)
 
 
-@main.route('/movie/review/new/<int:id>', methods = ['GET','POST'])
+@main.route('/pitch/new', methods=['GET','POST'])
 @login_required
-def new_review(id):
-    pass
+def make_pitch():
 
-@main.route('/user/<uname>/update',methods = ['GET','POST'])
+    form =PitchForm()
+    available_upvotes=Upvote.query.filter_by(pitch_id = Pitch.id)
+    if form.validate_on_submit(): 
+
+        owner_id = current_user
+        category = form.category.data
+        description = form.description.data
+        title = form.title.data
+        print(current_user._get_current_object().id)
+        make_pitch = Pitch(owner_id =current_user._get_current_object().id, title = title,description=description,category=category)
+        db.session.add(make_pitch)
+        db.session.commit()
+        
+        
+        return redirect(url_for('main.index'))
+    return render_template('pitch.html',form=form)
+    
+
+@main.route('/comment/new/<int:pitch_id>', methods = ['GET','POST'])
 @login_required
+def make_comment(pitch_id):
+    form = CommentForm()
+    pitch=Pitch.query.get(pitch_id)
+    if form.validate_on_submit():
+        description = form.description.data
+
+        make_comment = Comment(description = description, user_id = current_user._get_current_object().id, pitch_id = pitch_id)
+        db.session.add(make_comment)
+        db.session.commit()
+
+
+        return redirect(url_for('.make_comment', pitch_id= pitch_id))
+
+    all_comments = Comment.query.filter_by(pitch_id = pitch_id).all()
+    return render_template('comment.html', form = form, comment = all_comments, pitch = pitch )
+
+    
+
+
+@main.route('/pitch/upvote/<int:pitch_id>/upvote', methods = ['GET', 'POST'])
+@login_required
+def make_upvote(pitch_id):
+    pitch = Pitch.query.get(pitch_id)
+    user = current_user
+    pitch_upvotes = Upvote.query.filter_by(pitch_id= pitch_id)
+    
+    if Upvote.query.filter(Upvote.user_id==user.id,Upvote.pitch_id==pitch_id).first():
+        return  redirect(url_for('main.index'))
+    
+    made_upvote = Upvote(pitch_id=pitch_id, user = current_user)
+    made_upvote.save_upvotes()
+    return redirect(url_for('main.index'))
+
+
+@main.route('/pitch/downvote/<int:pitch_id>/downvote', methods = ['GET', 'POST'])
+@login_required
+def make_downvote(pitch_id):
+    pitch = Pitch.query.get(pitch_id)
+    user = current_user
+    pitch_downvotes = Downvote.query.filter_by(pitch_id= pitch_id)
+    
+    if Downvote.query.filter(Downvote.user_id==user.id,Downvote.pitch_id==pitch_id).first():
+        return  redirect(url_for('main.index'))
+
+    made_downvote = Downvote(pitch_id=pitch_id, user = current_user)
+    made_downvote.save_downvotes()
+    return redirect(url_for('main.index'))
+
+    
+
+
+@main.route('/user/<uname>')
 def profile(uname):
-    user = User.query.filter_by(username = uname).first()
+    user=User.query.filter_by(username=uname).first()
+    pitcheslist=Pitch.get_pitches(current_user.id)
 
     if user is None:
-        abort(404)
+        abort (404)
 
-    return render_template("profile/profile.html", user = user)
+    return render_template("profile/profile.html",user=user,pitcheslist=pitcheslist)
 
+@main.route('/user/<uname>/update', methods=['GET','POST'])
+@login_required
 
-@main.route('/cryptography')
-def crypto_line():
-    
-    posts = [
-        {
-            'author': 'WERE',
-            'crypto_line': ' will?',
-            'date_posted': 'May 14th, 9095',
-            'crypto_id' : 1
-        },
-        {
-            'author': 'Jakes Jakes',
-            'crypto_line': 'accept Me.',
-            'date_posted': 'January 14th, 8020',
-            'crypto_id': 2
-        },
-        {
-            'author': 'Susan Jakes',
-            'crypto_line': 'Everything is possible. The impossible just takes longer.',
-            'date_posted': 'January 14th, 2020',
-            'crypto_id': 2
-        }
-    ]
-    
-    return render_template('cryptography.html', posts = posts)
+def update_profile(uname):
+    user = User.query.filter_by(username = uname).first()
+    if user is None:
+        abort (404)
+
+    form=UpdateProfile()
+
+    if form.validate_on_submit():
+        user.bio=form.bio.data
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('.profile',uname=user.username))
+
+    return render_template('profile/update.html',form=form)
+
+@main.route('/user/<uname>/update/pic',methods= ['POST'])
+@login_required
+def update_pic(uname):
+    user = User.query.filter_by(username = uname).first()
+    if 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path = f'photos/{filename}'
+        user.profile_pic_path = path
+        db.session.commit()
+    return redirect(url_for('main.profile',uname=uname))
