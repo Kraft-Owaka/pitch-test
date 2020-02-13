@@ -11,17 +11,17 @@
             <a class="navbar-brand" href="/pitch/new" style="font-size: 155%;"> <strong>Compose pitch</strong></a>
         </div>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right" style="font-size: 85%;">
-                <li><a href="/">Home</a></li>
+            <div class="nav navbar-nav navbar-right" style="font-size: 100%;">
+                <li style="color:white; font-size:25px"><a href="/">Home</a></li></div>
                 
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_authenticated %}
-                    <li style="color:white;padding:15px;">{{current_user.username}}</li>
+                    <li style="color:white;">{{current_user.username}}</li>
                     <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
                     {% else %}
-                    <li><a href="{{url_for('auth.login')}}">Sign in</a></li>
+                    <li style="color:white; font-size:20px"><a href="{{url_for('auth.login')}}">Sign in</a></li>
                     {%endif%}
-                  </ul>
+                </ul>
   
         </div>
 
