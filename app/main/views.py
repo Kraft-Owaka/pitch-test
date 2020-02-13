@@ -6,35 +6,23 @@ from flask_login import login_required,current_user
 from .form import UpdateProfile,PitchForm,CommentForm,UpvoteForm,DownvoteForm
 from flask_login import login_required
 from ..import db
-# import markdown2
-
-
-# Views
-# @main.route('/')
-# def index():
-
-#     '''
-#     View root page function that returns the index page and its data
-#     '''
-
-    
-#     return render_template('index.html') 
-
 
 @main.route('/', methods=['GET','POST'])
 def index():
-    pitch=Pitch.query.all()
+    # pitch=Pitch.query.all()
 
-    title='Pitch Zone'
+    # title='Pitch Zone'
 
-    investorpitch=Pitch.query.filter_by(category="investorpitch")
-    productpitch=Pitch.query.filter_by(category="productpitch")
-    interviewpitch=Pitch.query.filter_by(category="interviewpitch")
-    marketpitch=Pitch.query.filter_by(category="marketpitch")
+    # investorpitch=Pitch.query.filter_by(category="investorpitch")
+    # productpitch=Pitch.query.filter_by(category="productpitch")
+    # interviewpitch=Pitch.query.filter_by(category="interviewpitch")
+    # marketpitch=Pitch.query.filter_by(category="marketpitch")
 
-    upvotes=Upvote.get_all_upvotes(pitch_id=Pitch.id)
+    # upvotes=Upvote.get_all_upvotes(pitch_id=Pitch.id)
 
-    return render_template('root.html',title=title,investorpitch=investorpitch,productpitch=productpitch,interviewpitch=interviewpitch,marketpitch=marketpitch,upvotes=upvotes,pitch=pitch)
+    # return render_template('root.html',title=title,investorpitch=investorpitch,productpitch=productpitch,interviewpitch=interviewpitch,marketpitch=marketpitch,upvotes=upvotes,pitch=pitch)
+
+    return render_template('index.html')
 
 
 @main.route('/pitch/new', methods=['GET','POST'])

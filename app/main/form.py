@@ -2,16 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField,TextAreaField,SubmitField,RadioField
 from wtforms.validators import Required
 
-# class PickupForm(FlaskForm):
-    
-#     author = StringField('Pickup', validators = [Required()])
-#     pickup = TextAreaField('Pickup line', validators = [Required()])
-    
-#     submit = SubmitField('Submit')
 
-# class UpdateProfile(FlaskForm):
-#     bio = TextAreaField('Tell us about you.',validators = [Required()])
-#     submit = SubmitField('Submit')
 
 
 class PitchForm(FlaskForm):
@@ -20,9 +11,11 @@ class PitchForm(FlaskForm):
     category=RadioField('Label',choices=[('investorpitch','investorpitch'),('productpitch','productpitch'),('interviewpitch','interviewpitch'),('marketpitch','marketpitch')],validators=[Required()])
     description=TextAreaField('Enter your pitch', validators=[Required()])
     submit=SubmitField('Submit')
+    
 
 class CommentForm(FlaskForm):
     description=TextAreaField('Leave a comment')
+    comment = TextAreaField('comment', validators=[Required()])
     submit=SubmitField()
 
 class UpvoteForm(FlaskForm):
@@ -32,6 +25,6 @@ class DownvoteForm(FlaskForm):
     submit=SubmitField()
 
 class UpdateProfile(FlaskForm):
-    bio = TextAreaField('Tell us about you.',validators = [Required()])
-    submit = SubmitField('Submit')
+    bio = TextAreaField('Please describe yourself',validators = [Required()])
+    submit = SubmitField('Update')
 
