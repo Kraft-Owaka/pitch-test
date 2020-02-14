@@ -67,10 +67,11 @@ def make_pitch():
 
         user_id = current_user
         category = form.category.data
+        description = form.description.data
         content = form.content.data
         title = form.title.data
         print(current_user._get_current_object().id)
-        make_pitch = Pitch(id=id, user_id =current_user._get_current_object().id, title = title,content=content,category=category)
+        make_pitch = Pitch(id=id, user_id =current_user._get_current_object().id, title = title,content=content,description=description,category=category)
         
         # print(type(make_pitch))
         db.session.add(make_pitch)
