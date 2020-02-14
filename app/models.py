@@ -76,12 +76,16 @@ class Pitch(db.Model):
 
 
     def __repr__(self):
-        return f"Pitch('{self.title}','{self.date_posted}')"
+        return f"Pitch('{self.title}','{self.date_posted}','{self.content}')"
     
     @classmethod
     def get_pitches(cls,owner_id):
-        pitches = Pitch.query.filter_by(owner_id=owner_id).all()
+        pitches = Pitch.query.filter_by(owner_id=owner_id)
         return pitches
+    @classmethod
+    def get_all_pitches(cls):
+        pitch=Pitch.query.all()
+        return pitch
 
 
 class Comment(db.Model):

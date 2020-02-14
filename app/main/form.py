@@ -9,7 +9,7 @@ class PitchForm(FlaskForm):
 
     title=StringField('Pitch title', validators=[Required()])
     category=RadioField('Label',choices=[('investorpitch','investorpitch'),('productpitch','productpitch'),('interviewpitch','interviewpitch'),('marketpitch','marketpitch')],validators=[Required()])
-    description=TextAreaField('Enter your pitch', validators=[Required()])
+    content=TextAreaField('Enter your pitch', validators=[Required()])
     submit=SubmitField('Submit')
     
 

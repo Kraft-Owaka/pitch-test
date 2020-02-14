@@ -8,21 +8,53 @@ from flask_login import login_required
 from ..import db
 
 @main.route('/', methods=['GET','POST'])
+@login_required
 def index():
-    # pitch=Pitch.query.all()
+    allpitch=Pitch.get_all_pitches()
+    pitchjob=Pitch.query.filter_by(category='interviewpitch')
 
-    # title='Pitch Zone'
+    return render_template('index.html',pitch=allpitch,pitchjob=pitchjob)
 
-    # investorpitch=Pitch.query.filter_by(category="investorpitch")
-    # productpitch=Pitch.query.filter_by(category="productpitch")
-    # interviewpitch=Pitch.query.filter_by(category="interviewpitch")
-    # marketpitch=Pitch.query.filter_by(category="marketpitch")
+@main.route('/pitchesdisplay',methods=['GET','POST'])
+@login_required
+def pitchdisplay():
+    allpitch=Pitch.get_all_pitches()
+    pitchjob=Pitch.query.filter_by(category='interviewpitch')
 
+
+    return render_template('category.html',pitch=allpitch,pitchjob=pitchjob)
+
+@main.route('/pitchesdisplay',methods=['GET','POST'])
+@login_required
+def pitchdisplayproduct():
+    allpitch=Pitch.get_all_pitches()
+    pitchjob=Pitch.query.filter_by(category='productpitch')
+    
+
+    return render_template('category.html',pitch=allpitch,pitchevent=pitchevent)
+
+
+@main.route('/pitchesdisplay',methods=['GET','POST'])
+@login_required
+def pitchesinterview():
+    allpitch=Pitch.get_all_pitches()
+    pitchjob=Pitch.query.filter_by(category='investorpitch')
+    
+
+    return render_template('category.html',pitch=allpitch,pitcheinterview=pitcheinterview)
+
+@main.route('/pitches/<category>')
+@login_required
+def pitches(category):
+    pitches=Pitch.query.filter_by(category=category).all()
+
+   
     # upvotes=Upvote.get_all_upvotes(pitch_id=Pitch.id)
 
     # return render_template('root.html',title=title,investorpitch=investorpitch,productpitch=productpitch,interviewpitch=interviewpitch,marketpitch=marketpitch,upvotes=upvotes,pitch=pitch)
 
-    return render_template('index.html')
+    return render_template('pitches.html', pitches=pitches)
+
 
 
 @main.route('/pitch/new', methods=['GET','POST'])
@@ -33,14 +65,17 @@ def make_pitch():
     available_upvotes=Upvote.query.filter_by(pitch_id = Pitch.id)
     if form.validate_on_submit(): 
 
-        owner_id = current_user
+        user_id = current_user
         category = form.category.data
-        description = form.description.data
+        content = form.content.data
         title = form.title.data
         print(current_user._get_current_object().id)
-        make_pitch = Pitch(owner_id =current_user._get_current_object().id, title = title,description=description,category=category)
+        make_pitch = Pitch(id=id, user_id =current_user._get_current_object().id, title = title,content=content,category=category)
+        
+        # print(type(make_pitch))
         db.session.add(make_pitch)
         db.session.commit()
+      
         
         
         return redirect(url_for('main.index'))
