@@ -16,28 +16,27 @@
 <div class="container-fluid ">
   
     <div class="thing row top">
-        <div class="col-md-4">
+        <div class="col-md-5">
             <!-- {%for pitch in pitch%}
             {{pitch.category}}
             {%endfor%} -->
             <div id="jobs">
                 {%for pitchjob in pitchjob %}
-                {{pitchjob.content}}
+                <!-- {{pitchjob.content}} -->
                 {%endfor%}
             </div>
             
-            <a class="ratings" href="{{ url_for('main.make_pitch') }}"> Write a new Pitch</a><br><br>
-            <a class="ratings" href="{{ url_for('main.pitchdisplayproduct') }}"> Event Pitch</a>
-            <a class="ratings" href="{{ url_for('main.pitchdisplay') }}"> Job Pitch</a>
-            <a class="ratings" href="{{ url_for('main.pitchesinterview') }}"> interview Pitch</a>
+            <a class="ratings" href="{{ url_for('main.make_pitch') }}"> Write a new Pitch</a><br>
+            <a class="ratings t1" href="{{ url_for('main.pitchdisplayproduct') }}"> Event Pitch</a>
+            <a class="ratings t2" href="{{ url_for('main.pitchdisplay') }}"> Job Pitch</a>
+            <a class="ratings t3" href="{{ url_for('main.pitchesinterview') }}"> interview</a>
             
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
             <ul class="nav nav-pills nav-justified nav-fill" role="tablist">
                 <li class="nav-item">
                   <a class="nav-link active"  id="homCards1" data-toggle="tab" href="{{ url_for('main.pitchdisplayproduct') }}"><strong>Event Pitches</strong></a>
                 </li>
-              
                 <li class="nav-item">
                   <a class="nav-link"  id="homCards2" data-toggle="tab" href="{{ url_for('main.pitchdisplay') }}"> Job Pitches</a>
                 </li>
@@ -45,9 +44,11 @@
                   <a class="nav-link" id="homCards3"  data-toggle="tab" href="{{ url_for('main.pitchesinterview') }}">Interview Pitch</a>
                 </li>
 
-              </ul>
+            </ul>
+        </div>
+    </div>
 
-              <div class="tab-content">
+    <div class="tab-content">
         <div class="container tap-pan active" id="all">
           {{ macro.displayContent(pitches) }}
         </div>
@@ -60,12 +61,12 @@
         <div class="container tap-pan fade" id="event">
             {{macro.displayContent(event)}}
         </div>
-      </div>
+    </div>
           
 
-        </div>
         
-    </div>
+        
+</div>
     
     <style>
         .thing {
@@ -94,6 +95,16 @@
             font-size: 65px;
             background-color: blanchedalmond;
         }
+        .t1{
+            color: lightcyan;
+        }
+        .t2{
+            color: lightgreen;
+        }
+        .t3{
+            color: lightsalmon;
+        }
+
     </style>
 </div>
 
