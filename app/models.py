@@ -70,9 +70,7 @@ class Pitch(db.Model):
     category = db.Column(db.String(255), nullable= False)
     user_id=db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
     comments = db.relationship('Comment',backref='pitch',lazy='dynamic')
-    # upvotes = db.relationship('Upvote', backref = 'pitch', lazy = 'dynamic')
-    # downvotes = db.relationship('Downvote', backref = 'pitch', lazy = 'dynamic')
-
+    
 
 
     def __repr__(self):

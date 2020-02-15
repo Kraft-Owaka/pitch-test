@@ -2,7 +2,33 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
-<div>
+
+
+
+<div class="container" style="background: linear-gradient(to right, #ef8e38, #108dc7); width:70%;height:80%; font-size:30px;">
+	<div class="row" >
+		<div class="jumbotron" style="background: transparent;">
+			{{wtf.quick_form(form)}}
+			<ul style="list-style: none;background: transparent;">
+				{% for pitch in pitches %}
+				<div class="list-group" style="background: transparent;">
+					<a href="#">
+						<div class="list-item" style="background: transparent;">
+							<p>{{pitch.id}}</p>
+						</div>
+						<h4>{{ pitch.description }}</h4>
+						<h6> Posted by {{user.username}}.</h6>
+					</a>
+				</div>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- <div>
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
@@ -11,5 +37,5 @@
         </div>
         <div class="col-md-2"></div>
     </div>
-</div>
+</div> -->
 {%endblock%}

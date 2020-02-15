@@ -1,45 +1,14 @@
+{% import 'bootstrap/wtf.html' as wtf %}
 {% extends 'base.html'%}
 
-{% block content %}
-<body>
-<ul class="m1"  <style>
-    .thing {
-        font-family: 'Baloo', cursive;
-        color: black;
-        font-weight: 15px;
-        font-size: 90px;
-        padding : 30px;
-        padding-top : 250px;
-        padding-bottom : 300px;
-        background-image: linear-gradient(to top right, rgb(18, 19, 31), rgb(17, 32, 44), rgb(15, 46, 57), rgb(14, 59, 70), rgb(13, 72, 83), rgb(11, 85, 96), rgb(10, 99, 108), rgb(8, 112, 121), rgb(7, 125, 134), rgb(6, 138, 147), rgb(4, 152, 160), rgb(3, 165, 173));
-    }
-    .ratings {
-        color:wheat;
-        font-size: 34px;
-    }
-    #homCards3 {
-        font-size: 65px;
-        background-color: skyblue;
-    }
-    #homCards2 {
-        font-size: 65px;
-        background-color: burlywood;
-    }
-    #homCards1 {
-        font-size: 65px;
-        background-color: blanchedalmond;
-    }
-    .t1{
-        color: lightcyan;
-    }
-    .t2{
-        color: lightgreen;
-    }
-    .t3{
-        color: lightsalmon;
-    }
 
-</style >
+{% block content %}
+
+
+
+
+
+<body>
     {% for pitch in pitches %}
         <li>{{ pitch.content }}</li>
     {% endfor %}
@@ -57,6 +26,3 @@ body {
     
 
 </style>
-
-
-
